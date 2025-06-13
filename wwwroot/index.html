@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bitwise Tic-Tac-Toe</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Your custom styles -->
+    <link rel="stylesheet" href="GameStyle.css">
+
+    <!-- SignalR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Bitwise Tic-Tac-Toe</h1>
+
+        <!-- Game Controls -->
+        <div class="card p-4 mb-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <button id="createGameButton" class="btn btn-success" onclick="createGame()">Create Game</button>
+
+                <div class="dropdown input-group w-auto">
+                    <input type="text" class="form-control" id="gameIdInput" placeholder="Enter or select Game ID">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ▼
+                    </button>
+                    <ul class="dropdown-menu" id="gameDropdownMenu">
+                        <li><span class="dropdown-item text-muted">(Loading...)</span></li>
+                    </ul>
+                    <button id="joinGameButton" class="btn btn-primary" onclick="joinGame()">Join Game</button>
+                </div>
+
+                <button id="leaveGameButton" class="btn btn-danger" onclick="leaveGame()" disabled>Leave Game</button>
+            </div>
+        </div>
+
+        <!-- Game Info -->
+        <div id="gameInfo" class="alert alert-info text-center fw-bold mb-3"></div>
+
+        <!-- Game Board -->
+        <div id="gameBoard" class="d-grid gap-2 board hidden mx-auto mb-4" style="grid-template-columns: repeat(3, 100px); width: max-content;">
+            <!-- 9 cells -->
+            <div class="cell btn btn-outline-dark" onclick="makeMove(0)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(1)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(2)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(3)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(4)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(5)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(6)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(7)"></div>
+            <div class="cell btn btn-outline-dark" onclick="makeMove(8)"></div>
+        </div>
+
+        <!-- Game Status -->
+        <div id="status" class="text-center h5 mb-3 text-secondary"></div>
+
+        <!-- Rematch Section -->
+        <div class="text-center">
+            <button id="rematchButton" class="btn btn-warning hidden" onclick="requestRematch()">Request Rematch</button>
+            <p id="rematchStatus" class="mt-2 hidden fw-semibold text-muted">Rematch Votes: 0/2</p>
+        </div>
+    </div>
+
+    <!-- Toast-style alert -->
+    <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+    </div>
+    <!-- Bootstrap Bundle JS (includes Popper for dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="game.js"></script>
+</body>
+</html>

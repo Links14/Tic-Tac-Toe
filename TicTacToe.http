@@ -1,0 +1,6 @@
+@TicTacToe_HostAddress = http://localhost:5083
+
+GET {{TicTacToe_HostAddress}}/wwwroot/
+Accept: application/json
+
+###

@@ -1,0 +1,71 @@
+﻿/* General layout */
+body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Game container handled by Bootstrap’s container class */
+
+/* Game Info and Status */
+#gameInfo,
+#status {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Board layout */
+#gameBoard.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.cell {
+    height: 100px;
+    width: 100px;
+    font-size: 2rem;
+    text-align: center;
+    line-height: 100px;
+    cursor: pointer;
+    user-select: none;
+    padding: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Responsive overrides */
+@media (max-width: 768px) {
+    #gameBoard.board {
+        grid-template-columns: repeat(3, 80px);
+        gap: 4px;
+    }
+
+    .cell {
+        height: 80px;
+        width: 80px;
+        font-size: 1.8rem;
+        line-height: 80px;
+    }
+
+    #gameInfo,
+    #status {
+        font-size: 1rem;
+    }
+
+    input#gameIdInput {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}
