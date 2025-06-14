@@ -1,8 +1,24 @@
 ﻿let gameStarted = false;
+let connection;
 
-const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/GameHub")
-    .build();
+async function startSignalR() {
+    if (!connection || connection.state === "Disconnected") {
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:5001/GameHub", {
+                withCredentials: true
+            })
+            .build();
+
+        try {
+            await connection.start();
+            console.log("SignalR connected.");
+        } catch (err) {
+            console.error("SignalR connection failed:", err);
+        }
+    }
+}
+startSignalR();
+
 
 let currentPlayer = null;
 let gameId = null;
@@ -25,12 +41,14 @@ function renderBoard() {
 
 // Event: Game Started
 connection.on("GameStarted", (gameId, xPlayer, oPlayer) => {
+    console.log("Game started:", gameId, xPlayer, oPlayer);
     gameStarted = true;
     showToast("Both players connected. Game start!", "success");
 });
 
 // Event: Game successfully created (Player X)
 connection.on("GameCreated", id => {
+    console.log("Game created:", id);
     gameId = id;
     currentPlayer = 'X';
     setControlsEnabled(false);
@@ -78,13 +96,14 @@ connection.on("PlayerLeft", connectionId => {
     }, 1000);
 });
 
-// Event: Display Existing Games
+// Start connection
 connection.start()
     .then(() => {
         console.log("Connected to SignalR Hub");
+        // Event: Display Existing Games
         refreshGames();
     })
-    .catch(err => console.error("SignalR connection failed: ", err));
+    .catch(err => console.error("SignalR connection failed: ", err => console.error(err)));
 
 // Event: Update board (bitwise states)
 connection.on("UpdateBoard", (xBoard, oBoard) => {
@@ -199,7 +218,6 @@ function makeMove(index) {
         .catch(err => console.error(err.toString()));
 }
 
-
 // Request a rematch
 function requestRematch() {
     connection.invoke("RequestRematch", gameId)
@@ -262,11 +280,6 @@ function refreshGames() {
             menu.innerHTML = `<li><span class="dropdown-item text-danger">Error loading games</span></li>`;
         });
 }
-
-// Start connection
-connection.start()
-    .then(() => console.log("Connected to SignalR Hub"))
-    .catch(err => console.error("SignalR connection failed: ", err));
 
 document.addEventListener('DOMContentLoaded', () => {
     const dropdownToggle = document.querySelector('[data-bs-toggle="dropdown"]');
